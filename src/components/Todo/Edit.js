@@ -2,6 +2,28 @@ import React, { useState } from "react";
 
 const EditTodo = ({ todo }) => {
   const [description, setDescription] = useState(todo.description);
+
+  const updateDescription = async (e) => {
+    e.preventDefault();
+    try {
+      const body = { description };
+      const response = await fetch(
+        `http://localhost:5000/todos/${todo.todo_id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (response.status === 200) {
+        window.location = "/";
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <>
       <button
@@ -36,6 +58,7 @@ const EditTodo = ({ todo }) => {
                 type="button"
                 className="btn btn-warning"
                 data-dismiss="modal"
+                onClick={(e) => updateDescription(e)}
               >
                 Edit
               </button>
