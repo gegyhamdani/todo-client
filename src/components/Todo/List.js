@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 
 const ListTodos = () => {
+  const [todos, setTodos] = useState([]);
+
   const getTodos = async () => {
     try {
       const response = await fetch("http://localhost:5000/todos");
       const jsonData = await response.json();
 
-      console.log(jsonData);
+      setTodos(jsonData);
     } catch (error) {
       console.error(error.message);
     }
@@ -31,13 +33,15 @@ const ListTodos = () => {
           </tr>
         </thead>
         <tbody>
-          {
-            // <tr>
-            //   <td>John</td>
-            //   <td>Doe</td>
-            //   <td>john@example.com</td>
-            // </tr>
-          }
+          {todos.map((todo, i) => {
+            return (
+              <tr key={i.toString()}>
+                <td>{todo.description}</td>
+                <td>Edit</td>
+                <td>Delete</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </>
